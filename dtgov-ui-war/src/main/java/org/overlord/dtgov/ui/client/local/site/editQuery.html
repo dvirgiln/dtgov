@@ -45,11 +45,11 @@
 										<div class="col-sm-8">
 											<select id="inputQueryArtifactTYpe" class="form-control">
 												<option selected="selected">-</option>
-												<option>SwitchYardApplication</option>
-												<option>JavaArchive</option>	
-												<option>JavaEnterpriseApplication</option>
-												<option>JavaWebApplication</option>		
-												<option>ArtifactGrouping</option>						
+												<option value="SwitchYardApplication">SwitchYardApplication</option>
+												<option value="JavaArchive">JavaArchive</option>	
+												<option value="JavaEnterpriseApplication">JavaEnterpriseApplication</option>
+												<option value="JavaWebApplication">JavaWebApplication</option>		
+												<option value="ArtifactGrouping">ArtifactGrouping</option>						
 											</select>
 										</div>
 									</div>
@@ -98,10 +98,10 @@
 					            	<label for="queryPropertySelect">Type</label>
 					                <select id="queryPropertySelect" class="form-control" style="width: 80%;margin-left: 15px;">
 					                	<option selected="selected">-</option>
-					                	<option>Deployment Url</option>
-					                	<option>Notification Url</option>
-					                	<option>UpdateMetaDataUrl</option>
-					                	<option>Other</option>
+					                	<option value="deploymentUrl">Deployment Url</option>
+					                	<option value="notificationUrl">Notification Url</option>
+					                	<option value="updateMetaDataUrl">UpdateMetaDataUrl</option>
+					                	<option value="other">Other</option>
 					                </select>
 					            </div>
 					            <div class="form-group col-sm-3">
@@ -171,6 +171,9 @@
       $( "#btn-add-property" ).click(function() {
     	  $("#addPropertySection").toggle();
     	});
+     /* $( "#queryPropertySelect" ).change(function() {
+    	  alert( "Handler for .change() called." );
+      });*/
     </script>
 
   </body>
