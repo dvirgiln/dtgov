@@ -30,4 +30,9 @@ public class Constants {
     public static final String SORT_COLID_OWNER = "owner"; //$NON-NLS-1$
     public static final String SORT_COLID_STATUS = "status"; //$NON-NLS-1$
     public static final String SORT_COLID_DUE_ON = "expirationDate"; //$NON-NLS-1$
+    
+    // Sort columns for tasks
+    public static final String SORT_COLID_QUERY= "query"; //$NON-NLS-1$
+    public static final String SORT_COLID_WORKFLOW = "workflow"; //$NON-NLS-1$
+    
 }

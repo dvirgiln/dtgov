@@ -34,7 +34,7 @@ public class UiConfiguration {
     private String srampUiUrlBase;
     private Map<String, String> deploymentTypes = new LinkedHashMap<String, String>();
     private Map<String, String> deploymentStages = new LinkedHashMap<String, String>();
-
+    private Map<String, String> workFlowTypes = new LinkedHashMap<String, String>();
     /**
      * Constructor.
      */
@@ -54,6 +54,13 @@ public class UiConfiguration {
      */
     public Map<String, String> getDeploymentStages() {
         return deploymentStages;
+    }
+    
+    /**
+     * @return the deploymentStages
+     */
+    public Map<String, String> getWorkflowTypes() {
+        return workFlowTypes;
     }
 
     /**
@@ -135,6 +142,16 @@ public class UiConfiguration {
         GWT.log("[UiConfig] - Registered Deployment Stage: " + label + "=" + classifier); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
+    /**
+     * Adds a single deployment stage to the map.
+     * @param label
+     * @param classifier
+     */
+    private void addWorkingType(String label, String classifier) {
+        this.getWorkflowTypes().put(label, classifier);
+        GWT.log("[UiConfig] - Registered Working Type: " + label + "=" + classifier); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    
     /**
      * Sets the s-ramp-ui URL base.
      * @param urlBase
