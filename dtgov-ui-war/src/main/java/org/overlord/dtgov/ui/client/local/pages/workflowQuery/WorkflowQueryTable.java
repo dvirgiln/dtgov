@@ -17,20 +17,26 @@ package org.overlord.dtgov.ui.client.local.pages.workflowQuery;
  */
 
 import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.jboss.errai.ui.nav.client.local.TransitionAnchorFactory;
 import org.overlord.commons.gwt.client.local.widgets.SortableTemplatedWidgetTable;
 import org.overlord.dtgov.ui.client.local.ClientMessages;
 import org.overlord.dtgov.ui.client.local.pages.DeploymentDetailsPage;
-import org.overlord.dtgov.ui.client.local.pages.EditWorkflowQueryPage;
+import org.overlord.dtgov.ui.client.local.pages.WorkflowQueryPage;
 import org.overlord.dtgov.ui.client.shared.beans.Constants;
 import org.overlord.dtgov.ui.client.shared.beans.DeploymentSummaryBean;
 import org.overlord.dtgov.ui.client.shared.beans.WorkflowQuerySummaryBean;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Anchor;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * A table of workflow queries.
@@ -43,21 +49,32 @@ public class WorkflowQueryTable extends SortableTemplatedWidgetTable {
     @Inject
     protected ClientMessages i18n;
     @Inject
-    protected TransitionAnchorFactory<EditWorkflowQueryPage> editQueryLinkFactory;
+    protected TransitionAnchorFactory<WorkflowQueryPage> editQueryLinkFactory;
 
+    protected Instance<DeleteWorkflowQueryDialog> deleteWorkflowQueryDialog;
+    
     /**
      * Constructor.
      */
     public WorkflowQueryTable() {
     }
 
-    /**
+    
+
+
+	public void setDeleteWorkflowQueryDialog(
+			Instance<DeleteWorkflowQueryDialog> deleteWorkflowQueryDialog) {
+		this.deleteWorkflowQueryDialog = deleteWorkflowQueryDialog;
+	}
+
+
+	/**
      * @see org.overlord.sramp.ui.client.local.widgets.common.SortableTemplatedWidgetTable#getDefaultSortColumn()
      */
     @Override
     public SortColumn getDefaultSortColumn() {
         SortColumn sortColumn = new SortColumn();
-        sortColumn.columnId = Constants.SORT_COLID_WORKFLOW;
+        sortColumn.columnId = Constants.SORT_COLID_WORKFLOW_NAME;
         sortColumn.ascending = false;
         return sortColumn;
     }
@@ -67,9 +84,10 @@ public class WorkflowQueryTable extends SortableTemplatedWidgetTable {
      */
     @Override
     protected void configureColumnSorting() {
-        setColumnSortable(0, Constants.SORT_COLID_QUERY);
-        setColumnSortable(2, Constants.SORT_COLID_WORKFLOW);
-        sortBy(Constants.SORT_COLID_WORKFLOW, false);
+        setColumnSortable(0, Constants.SORT_COLID_WORKFLOW_NAME);
+        setColumnSortable(1, Constants.SORT_COLID_WORKFLOW_TYPE);
+        setColumnSortable(2, Constants.SORT_COLID_WORKFLOW_QUERY);
+        sortBy(Constants.SORT_COLID_WORKFLOW_NAME, false);
     }
 
     /**
@@ -80,13 +98,43 @@ public class WorkflowQueryTable extends SortableTemplatedWidgetTable {
         int rowIdx = this.rowElements.size();
 
         //Anchor name = editQueryLinkFactory.get("uuid", deploymentSummaryBean.getUuid()); //$NON-NLS-1$
-        Anchor query = editQueryLinkFactory.get(); //$NON-NLS-1$
-        query.setText(workFlowQuerySummaryBean.getQuery());
-        InlineLabel workflow = new InlineLabel(workFlowQuerySummaryBean.getWorkflow());
+        Anchor name_link = editQueryLinkFactory.get("uuid",workFlowQuerySummaryBean.getUuid()); //$NON-NLS-1$
+        name_link.setText(workFlowQuerySummaryBean.getName());
        
+        InlineLabel query = new InlineLabel( workFlowQuerySummaryBean.getQuery());
+        
+        InlineLabel workflow = new InlineLabel(workFlowQuerySummaryBean.getWorkflow());
+        
+        FlowPanel actions=new FlowPanel();
+        Anchor editQuery=editQueryLinkFactory.get("uuid",workFlowQuerySummaryBean.getUuid()); 
+        
+        InlineLabel editAction=new InlineLabel();
+        editAction.setStyleName("workflow-icon", true);
+        editAction.setStyleName("workflow-edit-icon", true);
+        editAction.setStyleName("firstAction", true);
+        
+        editQuery.getElement().appendChild(editAction.getElement());
+        actions.add(editQuery);
 
-        add(rowIdx, 0, query);
+        InlineLabel deleteAction=new InlineLabel();
+        deleteAction.setStyleName("workflow-icon", true);
+        deleteAction.setStyleName("workflow-delete-icon", true);
+        actions.add(deleteAction);
+        
+        deleteAction.addClickHandler( new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				DeleteWorkflowQueryDialog dialog=deleteWorkflowQueryDialog.get();
+				dialog.setWorkflowQuery(workFlowQuerySummaryBean);
+				dialog.show();
+			}
+		});
+        add(rowIdx, 0, name_link);
         add(rowIdx, 1, workflow);
+        add(rowIdx, 2, query);
+        Element row=add(rowIdx, 3,actions);
+        setStyleName(row, "actions", true);
         //add(rowIdx, 2, initiatedOn);
     }
 

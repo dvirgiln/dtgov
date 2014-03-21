@@ -2,18 +2,22 @@ package org.overlord.dtgov.ui.client.local.pages;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.Dependent;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import org.jboss.errai.ui.nav.client.local.Page;
 import org.jboss.errai.ui.nav.client.local.PageShown;
 import org.jboss.errai.ui.nav.client.local.TransitionAnchor;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
+import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.overlord.commons.gwt.client.local.events.TableSortEvent;
 import org.overlord.commons.gwt.client.local.widgets.HtmlSnippet;
 import org.overlord.commons.gwt.client.local.widgets.Pager;
 import org.overlord.commons.gwt.client.local.widgets.SortableTemplatedWidgetTable.SortColumn;
 import org.overlord.dtgov.ui.client.local.ClientMessages;
+import org.overlord.dtgov.ui.client.local.pages.deployments.AddDeploymentDialog;
+import org.overlord.dtgov.ui.client.local.pages.workflowQuery.DeleteWorkflowQueryDialog;
 import org.overlord.dtgov.ui.client.local.pages.workflowQuery.WorkflowQueriesFilter;
 import org.overlord.dtgov.ui.client.local.pages.workflowQuery.WorkflowQueryTable;
 import org.overlord.dtgov.ui.client.local.services.ApplicationStateKeys;
@@ -21,21 +25,23 @@ import org.overlord.dtgov.ui.client.local.services.ApplicationStateService;
 import org.overlord.dtgov.ui.client.local.services.NotificationService;
 import org.overlord.dtgov.ui.client.local.services.WorkflowQueriesRpcService;
 import org.overlord.dtgov.ui.client.local.services.rpc.IRpcServiceInvocationHandler;
+import org.overlord.dtgov.ui.client.shared.beans.DeploymentsFilterBean;
 import org.overlord.dtgov.ui.client.shared.beans.WorkflowQueriesFilterBean;
 import org.overlord.dtgov.ui.client.shared.beans.WorkflowQueryResultSetBean;
 import org.overlord.dtgov.ui.client.shared.beans.WorkflowQuerySummaryBean;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.SpanElement;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.Button;
 
 
-@Templated("/org/overlord/dtgov/ui/client/local/site/adminQueries.html#page")
-@Page(path="adminQueries")
+@Templated("/org/overlord/dtgov/ui/client/local/site/workflowQueries.html#page")
+@Page(path="workflowQueries")
 @Dependent
-public class AdminQueriesPage extends AbstractPage {
+public class WorkflowQueriesPage extends AbstractPage {
 
     @Inject
     protected ClientMessages i18n;
@@ -53,6 +59,7 @@ public class AdminQueriesPage extends AbstractPage {
     @Inject @DataField("back-to-dashboard")
     TransitionAnchor<DashboardPage> backToDashboard;
 
+    
     
     @Inject @DataField("queries-filter-sidebar")
     protected WorkflowQueriesFilter filtersPanel;
@@ -80,10 +87,13 @@ public class AdminQueriesPage extends AbstractPage {
     
     @Inject @DataField("btn-add")
     protected Button addButton;
+    
+    @Inject
+    protected Instance<DeleteWorkflowQueryDialog> deleteWorkflowQueryDialog;
     /**
      * Constructor.
      */
-    public AdminQueriesPage() {
+    public WorkflowQueriesPage() {
     }
     
     /**
@@ -116,6 +126,16 @@ public class AdminQueriesPage extends AbstractPage {
 
         this.rangeSpan.setInnerText("?"); //$NON-NLS-1$
         this.totalSpan.setInnerText("?"); //$NON-NLS-1$
+        workflowQueryTable.setDeleteWorkflowQueryDialog(deleteWorkflowQueryDialog);
+    }
+    
+    /**
+     * Event handler that fires when the user clicks the refresh button.
+     * @param event
+     */
+    @EventHandler("btn-refresh")
+    public void onRefreshClick(ClickEvent event) {
+        doSearch(currentPage);
     }
     
     /**
@@ -136,9 +156,9 @@ public class AdminQueriesPage extends AbstractPage {
         final WorkflowQueriesFilterBean filterBean = filtersPanel.getValue();
         final SortColumn currentSortColumn = this.workflowQueryTable.getCurrentSortColumn();
         
-        stateService.put(ApplicationStateKeys.DEPLOYMENTS_FILTER, filterBean);
-        stateService.put(ApplicationStateKeys.DEPLOYMENTS_PAGE, currentPage);
-        stateService.put(ApplicationStateKeys.DEPLOYMENTS_SORT_COLUMN, currentSortColumn);
+        stateService.put(ApplicationStateKeys.WORKFLOW_QUERIES_FILTER, filterBean);
+        stateService.put(ApplicationStateKeys.WORKFLOW_QUERIES_PAGE, currentPage);
+        stateService.put(ApplicationStateKeys.WORKFLOW_QUERIES_SORT_COLUMN, currentSortColumn);
 
         workflowQueryService.search(filterBean, page, currentSortColumn.columnId, currentSortColumn.ascending,
                 new IRpcServiceInvocationHandler<WorkflowQueryResultSetBean>() {
@@ -207,11 +227,32 @@ public class AdminQueriesPage extends AbstractPage {
     }
     
     /**
+     * Kick off a search at this point so that we show some data in the UI.
+     * @see org.overlord.dtgov.ui.client.local.pages.AbstractPage#onPageShowing()
+     */
+    @Override
+    protected void onPageShowing() {
+        // Refresh the filters
+        filtersPanel.refresh();
+
+        WorkflowQueriesFilterBean filterBean = (WorkflowQueriesFilterBean) stateService.get(ApplicationStateKeys.WORKFLOW_QUERIES_FILTER, new WorkflowQueriesFilterBean());
+        //String searchText = (String) stateService.get(ApplicationStateKeys.DEPLOYMENTS_SEARCH_TEXT, ""); //$NON-NLS-1$
+        Integer page = (Integer) stateService.get(ApplicationStateKeys.WORKFLOW_QUERIES_PAGE, 1);
+        SortColumn sortColumn = (SortColumn) stateService.get(ApplicationStateKeys.WORKFLOW_QUERIES_SORT_COLUMN, this.workflowQueryTable.getDefaultSortColumn());
+
+        this.filtersPanel.setValue(filterBean);
+        this.workflowQueryTable.sortBy(sortColumn.columnId, sortColumn.ascending);
+        
+        // Kick off a search
+        doSearch(page);
+    }
+    
+    /**
      * Called whenver the page is shown.
      */
     @PageShown
     public void onPageShown() {
-    	doSearch();
+    	//doSearch();
     }
 
 }

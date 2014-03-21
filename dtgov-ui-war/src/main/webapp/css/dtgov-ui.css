@@ -530,3 +530,30 @@ div.task-form label {
 div.task-form label.checkbox, div.task-form label.radio {
   font-weight: normal;
 }
+
+
+.workflow-icon{
+	background-repeat: no-repeat;
+ 	padding-left: 25px;
+   	padding-bottom: 5px;
+}
+
+.workflow-edit-icon {
+  background-image: url(../images/event-edit.png) !important;
+}
+
+.workflow-delete-icon {
+  background-image: url(../images/event-delete.png) !important;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.queries-table .actions{
+	margin:0px;
+	padding: 0px;
+}
+
+.queries-table .actions .firstAction{
+	margin-right: 10px;
+}
+

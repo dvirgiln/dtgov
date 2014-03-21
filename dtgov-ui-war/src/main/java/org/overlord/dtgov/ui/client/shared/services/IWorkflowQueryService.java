@@ -25,5 +25,11 @@ public interface IWorkflowQueryService {
      */
     public WorkflowQueryResultSetBean search(WorkflowQueriesFilterBean filters, int page, String sortColumnId,
             boolean sortAscending) throws DtgovUiException;
+    
+    /**
+     * Delete an specific uuid workflow query
+     * @param uuid
+     */
+    public void delete(String uuid) throws DtgovUiException;
 
 }

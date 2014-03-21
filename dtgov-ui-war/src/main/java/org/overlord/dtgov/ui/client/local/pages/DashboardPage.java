@@ -41,7 +41,7 @@ public class DashboardPage extends AbstractPage {
     private TransitionAnchor<DeploymentsPage> toDeploymentsPage;
 
     @Inject @DataField("to-adminQueries-page")
-    private TransitionAnchor<AdminQueriesPage> toAdminQueriesPage;
+    private TransitionAnchor<WorkflowQueriesPage> toAdminQueriesPage;
 
     
     /**

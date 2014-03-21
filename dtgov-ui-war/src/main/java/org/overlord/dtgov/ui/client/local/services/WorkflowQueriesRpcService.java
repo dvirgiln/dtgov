@@ -54,7 +54,21 @@ public class WorkflowQueriesRpcService{
         }
     }
 
-   
+
+    /**
+     * @see org.overlord.dtgov.ui.client.shared.services.IDeploymentsService#search(DeploymentsFilterBean, String, int, String, boolean)
+     */
+    public void delete(String uuid,
+            final IRpcServiceInvocationHandler<Void> handler) {
+        RemoteCallback<Void> successCallback = new DelegatingRemoteCallback<Void>(handler);
+        ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
+        try {
+        	remoteWorkflowQueryService.call(successCallback, errorCallback).delete(uuid);
+        } catch (DtgovUiException e) {
+            errorCallback.error(null, e);
+        }
+    }
+
 
 }
 

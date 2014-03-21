@@ -11,6 +11,7 @@ public class WorkflowQuerySummaryBean implements Serializable{
 	 */
 	private static final long serialVersionUID = 7284042552981203699L;
 	private String uuid;
+    private String name;
     private String description;
     private String query;
     private String workflow;
@@ -46,12 +47,20 @@ public class WorkflowQuerySummaryBean implements Serializable{
 		this.workflow = workflow;
 		return this;
 	}
+	public String getName() {
+		return name;
+	}
+	public WorkflowQuerySummaryBean setName(String name) {
+		this.name = name;
+		return this;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result
 				+ ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + ((query == null) ? 0 : query.hashCode());
 		result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
 		result = prime * result
@@ -72,6 +81,11 @@ public class WorkflowQuerySummaryBean implements Serializable{
 				return false;
 		} else if (!description.equals(other.description))
 			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
 		if (query == null) {
 			if (other.query != null)
 				return false;
@@ -91,10 +105,13 @@ public class WorkflowQuerySummaryBean implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "WorkflowQuerySummaryBean [uuid=" + uuid + ", description="
-				+ description + ", query=" + query + ", workflow=" + workflow
-				+ "]";
+		return "WorkflowQuerySummaryBean [uuid=" + uuid + ", name=" + name
+				+ ", description=" + description + ", query=" + query
+				+ ", workflow=" + workflow + "]";
 	}
+
+	
+	
     
     
 }

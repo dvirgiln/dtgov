@@ -50,6 +50,7 @@ public class WorkflowQueryService implements IWorkflowQueryService{
        query1.setDescription("to be done1");
        query1.setQuery("/s-ramp/ext/SwitchYardApplication");
        query1.setUuid("0");
+       query1.setName("Name1");
        query1.setWorkflow("overlord.demo.SimpleReleaseProcess");
        queries.add(query1);
        
@@ -57,6 +58,7 @@ public class WorkflowQueryService implements IWorkflowQueryService{
        query2.setDescription("to be done2");
        query2.setQuery("/s-ramp/ext/SwitchYardApplication");
        query2.setUuid("2");
+       query2.setName("Name2");
        query2.setWorkflow("overlord.demo.SimpleReleaseProcess");
        queries.add(query2);
        
@@ -64,6 +66,7 @@ public class WorkflowQueryService implements IWorkflowQueryService{
        query3.setDescription("to be done3");
        query3.setQuery("/s-ramp/ext/SwitchYardApplication3");
        query3.setUuid("3");
+       query3.setName("Name3");
        query3.setWorkflow("overlord.demo.SimpleReleaseProcess");
        queries.add(query3);
        
@@ -71,12 +74,21 @@ public class WorkflowQueryService implements IWorkflowQueryService{
        query4.setDescription("to be done4");
        query4.setQuery("/s-ramp/ext/SwitchYardApplication4");
        query4.setUuid("4");
+       query4.setName("Name4");
        query4.setWorkflow("overlord.demo.SimpleReleaseProcess");
        queries.add(query4);
-       
-            rval.setQueries(queries);
-            return rval;
+       int startIndex = (page-1) * PAGE_SIZE;
+       rval.setQueries(queries);
+       rval.setItemsPerPage(PAGE_SIZE);
+       rval.setTotalResults(4);
+       rval.setStartIndex(startIndex);
+       return rval;
 
+	}
+
+	@Override
+	public void delete(String uuid) throws DtgovUiException {
+		// TODO Auto-generated method stub
 	}
 
 }

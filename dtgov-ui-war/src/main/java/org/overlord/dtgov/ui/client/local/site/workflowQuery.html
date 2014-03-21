@@ -43,7 +43,7 @@ src="../../../../../../../../webapp/js/dtgov-ui-responsive.js"></script>
                   <span class="divider">/<span data-role="dummy" /></span>
                 </li>
                 <li>
-                  <a data-field="back-to-admin-queries" href="adminQueries.html"
+                  <a data-field="back-to-admin-queries" href="workflowQueries.html"
                      data-i18n-key="breadcrumb.adminQueries">Workflow Queries</a>
                   <span class="divider">/<span data-role="dummy" /></span>
                 </li>
@@ -65,26 +65,37 @@ src="../../../../../../../../webapp/js/dtgov-ui-responsive.js"></script>
         <!-- The query form -->
         <div class="row-fluid query-details-form">
           <div class="span12 query-details">
-            <form class="form-horizontal span9">
+            <form class="form-horizontal span9" data-field="add-workflow-query-form">
+              <div class="control-group">
+                <label class="control-label" data-placement="top" data-i18n-key="form.query.name" for="inputFieldQueryName" title="Write an unique name that identifies the query.">Name</label>
+                <div class="controls">
+                  <input type="text"
+                      placeholder="Enter a unique query name"
+                      id="inputFieldQueryName"
+                      class="form-control input-xxlarge input-value"
+                      data-field="form-workflow-query-name-input"></input>
+                </div>
+              </div>
               <div class="control-group">
                 <label class="control-label" data-placement="top" data-i18n-key="form.query" for="inputFieldQuery" title="Write an S-RAMP query that will be used to find artifacts to be governed.">Trigger Query:</label>
                 <div class="controls">
                   <input type="text"
                       placeholder="Enter a valid S-RAMP query"
                       id="inputFieldQuery"
-                      class="form-control input-xxlarge input-value"></input>
+                      class="form-control input-xxlarge input-value"
+                      data-field="form-workflow-query-input"></input>
                 </div>
               </div>
               <div class="control-group">
                 <label class="control-label" data-placement="top" for="inputFieldDesc"  data-i18n-key="form.description" title="Enter a simple description of this workflow trigger query - it should indicate the query's purpose.">Description:</label>
                 <div class="controls">
-                  <textarea data-field="value" id="inputFieldDesc" placeholder="Enter the purpose of this workflow trigger" class="input-value" rows="5" cols="" ></textarea>
+                  <textarea data-field="form-workflow-description-input" id="inputFieldDesc" placeholder="Enter the purpose of this workflow trigger" class="input-value" rows="5" cols="" ></textarea>
                 </div>
               </div>
               <div class="control-group">
                 <label class="control-label" data-placement="top" for="inputFieldWorkflow" data-i18n-key="form.workflow" title="Choose the workflow that will be created when an artifact matches this query.">Workflow:</label>
                 <div class="controls">
-                  <select class="form-control" id="inputFieldWorkflow">
+                  <select data-field="form-workflow-type-input" class="form-control" id="inputFieldWorkflow" data-role="dummy">
                       <option selected="selected">-</option>
                       <option>SimpleReleaseProcess</option>
                       <option>SimplifiedProjectLifeCycle</option>

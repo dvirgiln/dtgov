@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.ListBox;
+import com.google.gwt.user.client.ui.TextBox;
 
 /**
  * The workflow queries filtersPanel sidebar.  Whenever the user changes any of the settings in
@@ -29,11 +30,11 @@ import com.google.gwt.user.client.ui.ListBox;
  *
  * @author dvirgiln@redhat.com
  */
-@Templated("/org/overlord/dtgov/ui/client/local/site/adminQueries.html#queries-filter-sidebar")
+@Templated("/org/overlord/dtgov/ui/client/local/site/workflowQueries.html#queries-filter-sidebar")
 @Dependent
 public class WorkflowQueriesFilter extends Composite implements HasValue<WorkflowQueriesFilterBean> {
 	
-	
+	 
     @Inject
     private ConfigurationService configService;
     
@@ -41,6 +42,9 @@ public class WorkflowQueriesFilter extends Composite implements HasValue<Workflo
     
 	@Inject @DataField
 	protected WorkflowTypeListBox workflow;
+	
+	@Inject @DataField
+	protected TextBox name;
 	
     @Inject @DataField
     protected Button clearFilters;
@@ -54,8 +58,6 @@ public class WorkflowQueriesFilter extends Composite implements HasValue<Workflo
     @SuppressWarnings("unchecked")
     @PostConstruct
     protected void postConstruct() {
-       workflow.addItem("DeploymentProcess", "DeploymentProcess");
-       workflow.addItem("ProjectProcess", "ProjectProcess");
        
        ClickHandler clearFilterHandler = new ClickHandler() {
            @Override
@@ -73,6 +75,7 @@ public class WorkflowQueriesFilter extends Composite implements HasValue<Workflo
            }
        };
        workflow.addValueChangeHandler(valueChangeHandler);
+       name.addValueChangeHandler(valueChangeHandler);
     }
 
     
@@ -82,6 +85,7 @@ public class WorkflowQueriesFilter extends Composite implements HasValue<Workflo
     @Override
     public void setValue(WorkflowQueriesFilterBean value, boolean fireEvents) {
         workflow.setValue(value.getWorkflow() == null ? "" : value.getWorkflow()); //$NON-NLS-1$
+        name.setValue(value.getName() == null ? "" : value.getName()); //$NON-NLS-1$
         WorkflowQueriesFilterBean oldState = this.currentState;
         currentState = value;
         if (fireEvents) {
@@ -97,8 +101,8 @@ public class WorkflowQueriesFilter extends Composite implements HasValue<Workflo
 
         // Update the items in the deployment type drop-down
         this.workflow.clear();
-        Map<String, String> deploymentTypes = uiConfig.getWorkflowTypes();
-        for (Entry<String, String> entry : deploymentTypes.entrySet()) {
+        Map<String, String> workflowTypes = uiConfig.getWorkflowTypes();
+        for (Entry<String, String> entry : workflowTypes.entrySet()) {
             this.workflow.addItem(entry.getKey(), entry.getValue());
         }
 
@@ -109,7 +113,7 @@ public class WorkflowQueriesFilter extends Composite implements HasValue<Workflo
      */
     protected void onFilterValueChange() {
         WorkflowQueriesFilterBean newState = new WorkflowQueriesFilterBean();
-        newState.setWorkflow(workflow.getValue());
+        newState.setWorkflow(workflow.getValue()).setName(name.getValue());
 
         WorkflowQueriesFilterBean oldState = this.currentState;
         this.currentState = newState;

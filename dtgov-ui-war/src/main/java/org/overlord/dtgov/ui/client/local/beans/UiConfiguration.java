@@ -40,6 +40,10 @@ public class UiConfiguration {
      */
     public UiConfiguration() {
         read();
+        this.addWorkingType("overlord.demo.SimpleReleaseProcess", "overlord.demo.SimpleReleaseProcess");
+        this.addWorkingType("overlord.demo.SimplifiedProjectLifeCycle", "overlord.demo.SimplifiedProjectLifeCycle");
+        //workflow.addItem(i18n.format("workflowQueries.filter.workflow.select.deploymentProcess.value"), "DeploymentProcess");
+       // workflow.addItem(i18n.format("workflowQueries.filter.workflow.select.projectProcess.value"), "ProjectProcess");
     }
 
     /**
