@@ -15,6 +15,7 @@ import org.overlord.dtgov.ui.client.shared.beans.DeploymentsFilterBean;
 import org.overlord.dtgov.ui.client.shared.beans.DerivedArtifactsBean;
 import org.overlord.dtgov.ui.client.shared.beans.ExpandedArtifactsBean;
 import org.overlord.dtgov.ui.client.shared.beans.WorkflowQueriesFilterBean;
+import org.overlord.dtgov.ui.client.shared.beans.WorkflowQueryBean;
 import org.overlord.dtgov.ui.client.shared.beans.WorkflowQueryResultSetBean;
 import org.overlord.dtgov.ui.client.shared.exceptions.DtgovUiException;
 import org.overlord.dtgov.ui.client.shared.services.IDeploymentsService;
@@ -64,6 +65,21 @@ public class WorkflowQueriesRpcService{
         ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
         try {
         	remoteWorkflowQueryService.call(successCallback, errorCallback).delete(uuid);
+        } catch (DtgovUiException e) {
+            errorCallback.error(null, e);
+        }
+    }
+    
+    
+    /**
+     * @see org.overlord.dtgov.ui.client.shared.services.IDeploymentsService#search(DeploymentsFilterBean, String, int, String, boolean)
+     */
+    public void get(String uuid,
+            final IRpcServiceInvocationHandler<WorkflowQueryBean> handler) {
+        RemoteCallback<WorkflowQueryBean> successCallback = new DelegatingRemoteCallback<WorkflowQueryBean>(handler);
+        ErrorCallback<?> errorCallback = new DelegatingErrorCallback(handler);
+        try {
+        	remoteWorkflowQueryService.call(successCallback, errorCallback).get(uuid);
         } catch (DtgovUiException e) {
             errorCallback.error(null, e);
         }

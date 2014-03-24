@@ -4,6 +4,7 @@ import org.jboss.errai.bus.server.annotations.Remote;
 import org.overlord.dtgov.ui.client.shared.beans.TaskInboxFilterBean;
 import org.overlord.dtgov.ui.client.shared.beans.TaskInboxResultSetBean;
 import org.overlord.dtgov.ui.client.shared.beans.WorkflowQueriesFilterBean;
+import org.overlord.dtgov.ui.client.shared.beans.WorkflowQueryBean;
 import org.overlord.dtgov.ui.client.shared.beans.WorkflowQueryResultSetBean;
 import org.overlord.dtgov.ui.client.shared.exceptions.DtgovUiException;
 
@@ -31,5 +32,11 @@ public interface IWorkflowQueryService {
      * @param uuid
      */
     public void delete(String uuid) throws DtgovUiException;
+    
+    /**
+     * Delete an specific uuid workflow query
+     * @param uuid
+     */
+    public WorkflowQueryBean get(String uuid) throws DtgovUiException;
 
 }

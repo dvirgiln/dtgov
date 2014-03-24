@@ -248,6 +248,7 @@
   "workflowQuery.workflow.properties.table.actions" : "Actions",
   "workflowQuery.add-property-button" : "Add Property",
   "workflowQuery.save" : "Save",
+  "workflowQuery.loading-workflow" : "Loading workflow query, please wait...",
   "workflowQuery.footer" : "JBoss Overlord 2014",
   "delete-workflow-query-submit.deleting-query" : "Deleting Workflow Query",
   "delete-workflow-query-submit.deleting-query-msg" : "Please wait while your workflow query is deleted...",

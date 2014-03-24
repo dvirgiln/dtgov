@@ -50,123 +50,130 @@ src="../../../../../../../../webapp/js/dtgov-ui-responsive.js"></script>
                 <li class="active" data-i18n-key="breadcrumb.admin-queries.edit">Edit Workflow Query</li>
             </ul>
         </div>
-
-        <!-- Explanation -->
-        <div class="page-explanation row-fluid">
-          <div class="span12">
-            <h2 data-i18n-key="query.title">Workflow Trigger Query Details</h2>
-            <div class="message" data-i18n-key="query.title.message">
-              Make changes to this workflow trigger query by using the form below, then click the Save button
-              to commit your changes.
-            </div>
-          </div>
+        <!-- Loading spinner -->
+        <div data-field="workflow-query-loading-spinner" class="spinner workflow-query-loading hide" data-i18n-key="loading-workflow">Loading workflow query, please wait...</div>
+        
+        <div id="workflow-query-content-wrapper">
+	           <!-- Explanation -->
+	        <div class="page-explanation row-fluid">
+	          <div class="span12">
+	            <h2 data-i18n-key="query.title">Workflow Trigger Query Details</h2>
+	            <div class="message" data-i18n-key="query.title.message">
+	              Make changes to this workflow trigger query by using the form below, then click the Save button
+	              to commit your changes.
+	            </div>
+	          </div>
+	        </div>
+	        
+	        <!-- The query form -->
+	        <div class="row-fluid query-details-form">
+	          <div class="span12 query-details">
+	            <form class="form-horizontal span9" data-field="add-workflow-query-form">
+	              <div class="control-group">
+	                <label class="control-label" data-placement="top" data-i18n-key="form.query.name" for="inputFieldQueryName" title="Write an unique name that identifies the query.">Name</label>
+	                <div class="controls">
+	                  <input type="text"
+	                      placeholder="Enter a unique query name"
+	                      id="inputFieldQueryName"
+	                      class="form-control input-xxlarge input-value"
+	                      data-field="form-workflow-query-name-input"></input>
+	                </div>
+	              </div>
+	              <div class="control-group">
+	                <label class="control-label" data-placement="top" data-i18n-key="form.query" for="inputFieldQuery" title="Write an S-RAMP query that will be used to find artifacts to be governed.">Trigger Query:</label>
+	                <div class="controls">
+	                  <input type="text"
+	                      placeholder="Enter a valid S-RAMP query"
+	                      id="inputFieldQuery"
+	                      class="form-control input-xxlarge input-value"
+	                      data-field="form-workflow-query-input"></input>
+	                </div>
+	              </div>
+	              <div class="control-group">
+	                <label class="control-label" data-placement="top" for="inputFieldDesc"  data-i18n-key="form.description" title="Enter a simple description of this workflow trigger query - it should indicate the query's purpose.">Description:</label>
+	                <div class="controls">
+	                  <textarea data-field="form-workflow-description-input" id="inputFieldDesc" placeholder="Enter the purpose of this workflow trigger" class="input-value" rows="5" cols="" ></textarea>
+	                </div>
+	              </div>
+	              <div class="control-group">
+	                <label class="control-label" data-placement="top" for="inputFieldWorkflow" data-i18n-key="form.workflow" title="Choose the workflow that will be created when an artifact matches this query.">Workflow:</label>
+	                <div class="controls">
+	                  <select data-field="form-workflow-type-input" class="form-control" id="inputFieldWorkflow" data-role="dummy">
+	                      <option selected="selected">-</option>
+	                      <option>SimpleReleaseProcess</option>
+	                      <option>SimplifiedProjectLifeCycle</option>
+	                  </select>
+	                </div>
+	              </div>
+	              <div class="control-group">
+	                <label class="control-label" data-placement="top" for="optionsRadios" title="" data-i18n-key="form.workflow.properties.title">Workflow Properties:</label>
+	                <div class="controls">
+	                   <table data-i18n-skip="true" data-field="queries-table" class="table table-striped table-condensed ">
+	                       <thead>
+	                           <tr>
+	                               <th data-i18n-key="name" width="30%" data-i18n-key="form.workflow.properties.table.name">Name</th>
+	                               <th data-i18n-key="value" width="69%" data-i18n-key="form.workflow.properties.table.value">Value</th>
+	                               <th data-i18n-key="value" width="1%" data-i18n-key="form.workflow.properties.table.actions">Actions</th>
+	                           </tr>
+	                       </thead>
+	                       <tbody data-role="dummy">
+	                           <tr>
+	                               <td class="table-workflow-name"><input
+	                                   type="text" value="DeploymentUrl" disabled="true" class="input-value"></td>
+	                               <td class="table-workflow-value"><input
+	                                   type="text"
+	                                   value="{governance.url}/rest/deploy/{target}/{uuid}" class="input-value"></td>
+	                               <td class="workflow-actions"><span><a
+	                                       title="Remove Property" href="./editQuery2.html"><img
+	                                           alt="Remove Property"
+	                                           src="../../../../../../../../webapp/images/event-delete.png"></a></span>
+	                               </td>
+	                           </tr>
+	                           <tr>
+	                               <td class="table-workflow-name"><input
+	                                   type="text" value="NotificationUrl" disabled="true" class="input-value"></td>
+	                               <td class="table-workflow-value"><input
+	                                   type="text"
+	                                   value="{governance.url}/rest/notify/email/{group}/deployed/{target}/{uuid}" class="input-value"></td>
+	                               <td class="workflow-actions"><span><a
+	                                       title="Remove Property" href="./editQuery2.html"><img
+	                                           alt="Remove Property"
+	                                           src="../../../../../../../../webapp/images/event-delete.png"></a></span>
+	                               </td>
+	                           </tr>
+	
+	                           <!-- What it looks like when adding a new row -->
+	                           <tr class="new-property">
+	                               <td class="table-workflow-name">
+	                                 <input class="input-value" type="text" data-provide="typeahead" data-items="6" data-source="[&quot;DeploymentUrl&quot;,&quot;NotificationUrl&quot;,&quot;UpdateMetaDataUrl&quot;]">
+	                               </td>
+	                               <td class="table-workflow-value">
+	                                 <input type="text" value="" class="input-value">
+	                               </td>
+	                               <td class="workflow-actions"><span><a
+	                                       title="Remove Property" href="./editQuery2.html"><img
+	                                           alt="Remove Property"
+	                                           src="../../../../../../../../webapp/images/event-delete.png"></a></span>
+	                               </td>
+	                           </tr>
+	
+	                       </tbody>
+	                   </table>
+	                   <div style="width: 95%">
+	                     &nbsp;
+	                     <button data-field="btn-add" id="btn-add-property" class="btn btn-focus pull-right" data-i18n-key="add-property-button">Add Property</button>
+	                   </div>
+	                   <hr />
+	                   <button data-field="btn-save" class="btn btn-focus" data-i18n-key="save">Save</button>
+	                </div>
+	              </div>
+	            </form>
+	          </div>
+	        </div>
+        
         </div>
         
-        <!-- The query form -->
-        <div class="row-fluid query-details-form">
-          <div class="span12 query-details">
-            <form class="form-horizontal span9" data-field="add-workflow-query-form">
-              <div class="control-group">
-                <label class="control-label" data-placement="top" data-i18n-key="form.query.name" for="inputFieldQueryName" title="Write an unique name that identifies the query.">Name</label>
-                <div class="controls">
-                  <input type="text"
-                      placeholder="Enter a unique query name"
-                      id="inputFieldQueryName"
-                      class="form-control input-xxlarge input-value"
-                      data-field="form-workflow-query-name-input"></input>
-                </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" data-placement="top" data-i18n-key="form.query" for="inputFieldQuery" title="Write an S-RAMP query that will be used to find artifacts to be governed.">Trigger Query:</label>
-                <div class="controls">
-                  <input type="text"
-                      placeholder="Enter a valid S-RAMP query"
-                      id="inputFieldQuery"
-                      class="form-control input-xxlarge input-value"
-                      data-field="form-workflow-query-input"></input>
-                </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" data-placement="top" for="inputFieldDesc"  data-i18n-key="form.description" title="Enter a simple description of this workflow trigger query - it should indicate the query's purpose.">Description:</label>
-                <div class="controls">
-                  <textarea data-field="form-workflow-description-input" id="inputFieldDesc" placeholder="Enter the purpose of this workflow trigger" class="input-value" rows="5" cols="" ></textarea>
-                </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" data-placement="top" for="inputFieldWorkflow" data-i18n-key="form.workflow" title="Choose the workflow that will be created when an artifact matches this query.">Workflow:</label>
-                <div class="controls">
-                  <select data-field="form-workflow-type-input" class="form-control" id="inputFieldWorkflow" data-role="dummy">
-                      <option selected="selected">-</option>
-                      <option>SimpleReleaseProcess</option>
-                      <option>SimplifiedProjectLifeCycle</option>
-                  </select>
-                </div>
-              </div>
-              <div class="control-group">
-                <label class="control-label" data-placement="top" for="optionsRadios" title="" data-i18n-key="form.workflow.properties.title">Workflow Properties:</label>
-                <div class="controls">
-                   <table data-i18n-skip="true" data-field="queries-table" class="table table-striped table-condensed ">
-                       <thead>
-                           <tr>
-                               <th data-i18n-key="name" width="30%" data-i18n-key="form.workflow.properties.table.name">Name</th>
-                               <th data-i18n-key="value" width="69%" data-i18n-key="form.workflow.properties.table.value">Value</th>
-                               <th data-i18n-key="value" width="1%" data-i18n-key="form.workflow.properties.table.actions">Actions</th>
-                           </tr>
-                       </thead>
-                       <tbody data-role="dummy">
-                           <tr>
-                               <td class="table-workflow-name"><input
-                                   type="text" value="DeploymentUrl" disabled="true" class="input-value"></td>
-                               <td class="table-workflow-value"><input
-                                   type="text"
-                                   value="{governance.url}/rest/deploy/{target}/{uuid}" class="input-value"></td>
-                               <td class="workflow-actions"><span><a
-                                       title="Remove Property" href="./editQuery2.html"><img
-                                           alt="Remove Property"
-                                           src="../../../../../../../../webapp/images/event-delete.png"></a></span>
-                               </td>
-                           </tr>
-                           <tr>
-                               <td class="table-workflow-name"><input
-                                   type="text" value="NotificationUrl" disabled="true" class="input-value"></td>
-                               <td class="table-workflow-value"><input
-                                   type="text"
-                                   value="{governance.url}/rest/notify/email/{group}/deployed/{target}/{uuid}" class="input-value"></td>
-                               <td class="workflow-actions"><span><a
-                                       title="Remove Property" href="./editQuery2.html"><img
-                                           alt="Remove Property"
-                                           src="../../../../../../../../webapp/images/event-delete.png"></a></span>
-                               </td>
-                           </tr>
-
-                           <!-- What it looks like when adding a new row -->
-                           <tr class="new-property">
-                               <td class="table-workflow-name">
-                                 <input class="input-value" type="text" data-provide="typeahead" data-items="6" data-source="[&quot;DeploymentUrl&quot;,&quot;NotificationUrl&quot;,&quot;UpdateMetaDataUrl&quot;]">
-                               </td>
-                               <td class="table-workflow-value">
-                                 <input type="text" value="" class="input-value">
-                               </td>
-                               <td class="workflow-actions"><span><a
-                                       title="Remove Property" href="./editQuery2.html"><img
-                                           alt="Remove Property"
-                                           src="../../../../../../../../webapp/images/event-delete.png"></a></span>
-                               </td>
-                           </tr>
-
-                       </tbody>
-                   </table>
-                   <div style="width: 95%">
-                     &nbsp;
-                     <button data-field="btn-add" id="btn-add-property" class="btn btn-focus pull-right" data-i18n-key="add-property-button">Add Property</button>
-                   </div>
-                   <hr />
-                   <button data-field="btn-save" class="btn btn-focus" data-i18n-key="save">Save</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
+     
         
         <!-- Footer -->
         <footer>
