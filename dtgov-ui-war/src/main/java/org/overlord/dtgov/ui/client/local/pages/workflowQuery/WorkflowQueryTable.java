@@ -1,3 +1,6 @@
+/*
+ * @author David Virgil Naranjo
+ */
 package org.overlord.dtgov.ui.client.local.pages.workflowQuery;
 
 /*
@@ -23,52 +26,57 @@ import javax.inject.Inject;
 import org.jboss.errai.ui.nav.client.local.TransitionAnchorFactory;
 import org.overlord.commons.gwt.client.local.widgets.SortableTemplatedWidgetTable;
 import org.overlord.dtgov.ui.client.local.ClientMessages;
-import org.overlord.dtgov.ui.client.local.pages.DeploymentDetailsPage;
 import org.overlord.dtgov.ui.client.local.pages.WorkflowQueryPage;
 import org.overlord.dtgov.ui.client.shared.beans.Constants;
-import org.overlord.dtgov.ui.client.shared.beans.DeploymentSummaryBean;
 import org.overlord.dtgov.ui.client.shared.beans.WorkflowQuerySummaryBean;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.InlineLabel;
-import com.google.gwt.user.client.ui.SimplePanel;
 
+// TODO: Auto-generated Javadoc
 /**
  * A table of workflow queries.
- *
+ * 
  * @author dvirgiln@redhat.com
  */
 @Dependent
 public class WorkflowQueryTable extends SortableTemplatedWidgetTable {
 
+    /** The _i18n. */
     @Inject
-    protected ClientMessages i18n;
-    @Inject
-    protected TransitionAnchorFactory<WorkflowQueryPage> editQueryLinkFactory;
+    private ClientMessages _i18n;
 
-    protected Instance<DeleteWorkflowQueryDialog> deleteWorkflowQueryDialog;
-    
+    /** The _edit query link factory. */
+    @Inject
+    private TransitionAnchorFactory<WorkflowQueryPage> _editQueryLinkFactory;
+
+    /** The _delete workflow query dialog. */
+    private Instance<DeleteWorkflowQueryDialog> _deleteWorkflowQueryDialog;
+
     /**
      * Constructor.
      */
     public WorkflowQueryTable() {
     }
 
-    
+    /**
+     * Sets the delete workflow query dialog.
+     * 
+     * @param deleteWorkflowQueryDialog
+     *            the new delete workflow query dialog
+     */
+    public void setDeleteWorkflowQueryDialog(Instance<DeleteWorkflowQueryDialog> deleteWorkflowQueryDialog) {
+        this._deleteWorkflowQueryDialog = deleteWorkflowQueryDialog;
+    }
 
-
-	public void setDeleteWorkflowQueryDialog(
-			Instance<DeleteWorkflowQueryDialog> deleteWorkflowQueryDialog) {
-		this.deleteWorkflowQueryDialog = deleteWorkflowQueryDialog;
-	}
-
-
-	/**
+    /**
+     * Gets the default sort column.
+     * 
+     * @return the default sort column
      * @see org.overlord.sramp.ui.client.local.widgets.common.SortableTemplatedWidgetTable#getDefaultSortColumn()
      */
     @Override
@@ -80,6 +88,8 @@ public class WorkflowQueryTable extends SortableTemplatedWidgetTable {
     }
 
     /**
+     * Configure column sorting.
+     * 
      * @see org.overlord.monitoring.ui.client.local.widgets.common.SortableTemplatedWidgetTable#configureColumnSorting()
      */
     @Override
@@ -92,50 +102,99 @@ public class WorkflowQueryTable extends SortableTemplatedWidgetTable {
 
     /**
      * Adds a single row to the table.
-     * @param deploymentSummaryBean
+     * 
+     * @param workFlowQuerySummaryBean
+     *            the work flow query summary bean
      */
     public void addRow(final WorkflowQuerySummaryBean workFlowQuerySummaryBean) {
         int rowIdx = this.rowElements.size();
 
         //Anchor name = editQueryLinkFactory.get("uuid", deploymentSummaryBean.getUuid()); //$NON-NLS-1$
-        Anchor name_link = editQueryLinkFactory.get("uuid",workFlowQuerySummaryBean.getUuid()); //$NON-NLS-1$
+        Anchor name_link = _editQueryLinkFactory.get("uuid", workFlowQuerySummaryBean.getUuid()); //$NON-NLS-1$
         name_link.setText(workFlowQuerySummaryBean.getName());
-       
-        InlineLabel query = new InlineLabel( workFlowQuerySummaryBean.getQuery());
-        
+
+        InlineLabel query = new InlineLabel(workFlowQuerySummaryBean.getQuery());
+
         InlineLabel workflow = new InlineLabel(workFlowQuerySummaryBean.getWorkflow());
-        
-        FlowPanel actions=new FlowPanel();
-        Anchor editQuery=editQueryLinkFactory.get("uuid",workFlowQuerySummaryBean.getUuid()); 
-        
-        InlineLabel editAction=new InlineLabel();
+
+        FlowPanel actions = new FlowPanel();
+        Anchor editQuery = _editQueryLinkFactory.get("uuid", workFlowQuerySummaryBean.getUuid());
+
+        InlineLabel editAction = new InlineLabel();
         editAction.setStyleName("workflow-icon", true);
         editAction.setStyleName("workflow-edit-icon", true);
         editAction.setStyleName("firstAction", true);
-        
+
         editQuery.getElement().appendChild(editAction.getElement());
         actions.add(editQuery);
 
-        InlineLabel deleteAction=new InlineLabel();
+        InlineLabel deleteAction = new InlineLabel();
         deleteAction.setStyleName("workflow-icon", true);
         deleteAction.setStyleName("workflow-delete-icon", true);
         actions.add(deleteAction);
-        
-        deleteAction.addClickHandler( new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				DeleteWorkflowQueryDialog dialog=deleteWorkflowQueryDialog.get();
-				dialog.setWorkflowQuery(workFlowQuerySummaryBean);
-				dialog.show();
-			}
-		});
+
+        deleteAction.addClickHandler(new ClickHandler() {
+
+            @Override
+            public void onClick(ClickEvent event) {
+                DeleteWorkflowQueryDialog dialog = _deleteWorkflowQueryDialog.get();
+                dialog.setWorkflowQuery(workFlowQuerySummaryBean);
+                dialog.show();
+            }
+        });
         add(rowIdx, 0, name_link);
         add(rowIdx, 1, workflow);
         add(rowIdx, 2, query);
-        Element row=add(rowIdx, 3,actions);
+        Element row = add(rowIdx, 3, actions);
         setStyleName(row, "actions", true);
-        //add(rowIdx, 2, initiatedOn);
+        // add(rowIdx, 2, initiatedOn);
+    }
+
+    /**
+     * Gets the i18n.
+     * 
+     * @return the i18n
+     */
+    public ClientMessages getI18n() {
+        return _i18n;
+    }
+
+    /**
+     * Sets the i18n.
+     * 
+     * @param i18n
+     *            the new i18n
+     */
+    public void setI18n(ClientMessages i18n) {
+        this._i18n = i18n;
+    }
+
+    /**
+     * Gets the edits the query link factory.
+     * 
+     * @return the edits the query link factory
+     */
+    public TransitionAnchorFactory<WorkflowQueryPage> getEditQueryLinkFactory() {
+        return _editQueryLinkFactory;
+    }
+
+    /**
+     * Sets the edits the query link factory.
+     * 
+     * @param editQueryLinkFactory
+     *            the new edits the query link factory
+     */
+    public void setEditQueryLinkFactory(TransitionAnchorFactory<WorkflowQueryPage> editQueryLinkFactory) {
+        this._editQueryLinkFactory = editQueryLinkFactory;
+    }
+
+    /**
+     * Gets the delete workflow query dialog.
+     * 
+     * @return the delete workflow query dialog
+     */
+    public Instance<DeleteWorkflowQueryDialog> getDeleteWorkflowQueryDialog() {
+        return _deleteWorkflowQueryDialog;
     }
 
 }

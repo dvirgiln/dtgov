@@ -557,3 +557,13 @@ div.task-form label.checkbox, div.task-form label.radio {
 	margin-right: 10px;
 }
 
+.error-validation{
+	margin-top:10px;
+	margin-bottom: 10px;
+}
+
+.error-validation table{
+	margin: 10px;
+	margin-left: 25px;	
+}
+

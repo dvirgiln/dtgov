@@ -15,7 +15,9 @@
  */
 package org.overlord.dtgov.ui.client.local.beans;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jboss.errai.ui.nav.client.local.HistoryToken;
@@ -35,13 +37,17 @@ public class UiConfiguration {
     private Map<String, String> deploymentTypes = new LinkedHashMap<String, String>();
     private Map<String, String> deploymentStages = new LinkedHashMap<String, String>();
     private Map<String, String> workFlowTypes = new LinkedHashMap<String, String>();
+    private Map<String, String> workflowPropertyKeyTypes = new LinkedHashMap<String, String>();
     /**
      * Constructor.
      */
     public UiConfiguration() {
         read();
-        this.addWorkingType("overlord.demo.SimpleReleaseProcess", "overlord.demo.SimpleReleaseProcess");
-        this.addWorkingType("overlord.demo.SimplifiedProjectLifeCycle", "overlord.demo.SimplifiedProjectLifeCycle");
+        /*this.addWorkflowType("overlord.demo.SimpleReleaseProcess", "overlord.demo.SimpleReleaseProcess");
+        this.addWorkflowType("overlord.demo.SimplifiedProjectLifeCycle", "overlord.demo.SimplifiedProjectLifeCycle");
+        this.addWorkflowPropertyKeyType("DeploymentUrl");
+        this.addWorkflowPropertyKeyType("NotificationUrl");
+        this.addWorkflowPropertyKeyType("UpdateMetaDataUrl");*/
         //workflow.addItem(i18n.format("workflowQueries.filter.workflow.select.deploymentProcess.value"), "DeploymentProcess");
        // workflow.addItem(i18n.format("workflowQueries.filter.workflow.select.projectProcess.value"), "ProjectProcess");
     }
@@ -67,6 +73,14 @@ public class UiConfiguration {
         return workFlowTypes;
     }
 
+    
+    /**
+     * @return the deploymentStages
+     */
+    public Map<String, String> getWorkflowPropertyKeyTypes() {
+        return workflowPropertyKeyTypes;
+    }
+    
     /**
      * Creates a link into the s-ramp UI.
      * @param pageName
@@ -116,6 +130,28 @@ public class UiConfiguration {
                     dis.@org.overlord.dtgov.ui.client.local.beans.UiConfiguration::addDeploymentStage(Ljava/lang/String;Ljava/lang/String;)(label, classifier);
                 }
             }
+            
+            var workflowConfig = $wnd.OVERLORD_DTGOVUI_CONFIG.workflow;
+            // Read the deployment types
+            var workflowTypes = workflowConfig.types;
+            for (var k in workflowTypes) {
+                if (workflowTypes.hasOwnProperty(k)) {
+                    var label = k;
+                    var type = workflowTypes[k];
+                    dis.@org.overlord.dtgov.ui.client.local.beans.UiConfiguration::addWorkflowType(Ljava/lang/String;Ljava/lang/String;)(label, type);
+                }
+            }
+
+            // Read the deployment stages
+            var propertyTypes = workflowConfig.propertyTypes;
+            for (var k in propertyTypes) {
+                if (propertyTypes.hasOwnProperty(k)) {
+                    var label = k;
+                    var example = propertyTypes[k];
+                    dis.@org.overlord.dtgov.ui.client.local.beans.UiConfiguration::addWorkflowPropertyKeyType(Ljava/lang/String;Ljava/lang/String;)(label,example);
+                }
+            }
+            
 
             // Read the s-ramp UI config
             var srampUiConfig = $wnd.OVERLORD_DTGOVUI_CONFIG.srampui;
@@ -151,10 +187,21 @@ public class UiConfiguration {
      * @param label
      * @param classifier
      */
-    private void addWorkingType(String label, String classifier) {
+    private void addWorkflowType(String label, String classifier) {
         this.getWorkflowTypes().put(label, classifier);
-        GWT.log("[UiConfig] - Registered Working Type: " + label + "=" + classifier); //$NON-NLS-1$ //$NON-NLS-2$
+        GWT.log("[UiConfig] - Registered Workflow Type: " + label + "=" + classifier); //$NON-NLS-1$ //$NON-NLS-2$
     }
+    
+    /**
+     * Adds a single deployment stage to the map.
+     * @param label
+     * @param classifier
+     */
+    private void addWorkflowPropertyKeyType(String label,String example) {
+        this.getWorkflowPropertyKeyTypes().put(label,example);
+        GWT.log("[UiConfig] - Registered Working Type: " + label +" example: "+example); //$NON-NLS-1$ //$NON-NLS-2$
+    }
+    
     
     /**
      * Sets the s-ramp-ui URL base.

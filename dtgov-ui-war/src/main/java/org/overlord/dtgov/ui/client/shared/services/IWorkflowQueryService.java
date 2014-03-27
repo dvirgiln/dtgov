@@ -11,7 +11,7 @@ import org.overlord.dtgov.ui.client.shared.exceptions.DtgovUiException;
 /**
  * Provides a way to manage workflow queries.
  *
- * @author dvirgiln@redhat.com
+ * @author David Virgil Naranjo
  */
 @Remote
 public interface IWorkflowQueryService {
@@ -34,9 +34,15 @@ public interface IWorkflowQueryService {
     public void delete(String uuid) throws DtgovUiException;
     
     /**
-     * Delete an specific uuid workflow query
+     * Get an specific uuid workflow query
      * @param uuid
      */
     public WorkflowQueryBean get(String uuid) throws DtgovUiException;
+    
+    /**
+     * Save an specific workflow query
+     * @param uuid
+     */
+    public String save (WorkflowQueryBean workflowQuery) throws DtgovUiException;
 
 }
