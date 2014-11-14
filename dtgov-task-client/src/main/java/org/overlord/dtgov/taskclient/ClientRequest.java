@@ -15,13 +15,16 @@
  */
 package org.overlord.dtgov.taskclient;
 
+import java.util.Set;
+
 import javax.ws.rs.core.UriBuilder;
 
 import org.jboss.resteasy.client.ClientExecutor;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
-import org.jboss.resteasy.specimpl.UriBuilderImpl;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
+import org.overlord.commons.resteasy.client.OverlordUriBuilder;
+import org.overlord.commons.services.ServiceRegistryUtil;
 import org.overlord.dtgov.taskclient.i18n.Messages;
 
 /**
@@ -46,7 +49,13 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 	 * @param uriTemplate
 	 */
 	private static UriBuilder getBuilder(String uriTemplate) {
-		return new UriBuilderImpl().uriTemplate(uriTemplate);
+        Set<OverlordUriBuilder> uriBuilders = ServiceRegistryUtil.getServices(OverlordUriBuilder.class);
+        if (uriBuilders.size() == 1) {
+            for (OverlordUriBuilder uriBuilder : uriBuilders) {
+                return uriBuilder.getBuilder(uriTemplate);
+            }
+        }
+        return null;
 	}
 
     /**

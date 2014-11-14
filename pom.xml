@@ -107,6 +107,8 @@
     <version.org.apache.httpcomponents.httpclient>4.2.1</version.org.apache.httpcomponents.httpclient>
     <version.org.apache.httpcomponents.httpcore>4.2.1</version.org.apache.httpcomponents.httpcore>
     <version.org.apache.httpcomponents.httpmime>4.2.1</version.org.apache.httpcomponents.httpmime>
+    <version.org.jboss.resteasy>3.0.8.Final</version.org.jboss.resteasy>
+	<version.javax.transaction>1.1</version.javax.transaction>
   </properties>
 
   <build>
@@ -651,7 +653,21 @@
         <version>${version.org.overlord.overlord-commons}</version>
       </dependency>
 
-
+      <dependency>
+      	<groupId>org.overlord</groupId>
+      	<artifactId>overlord-commons-resteasy-service</artifactId>
+        <version>${version.org.overlord.overlord-commons}</version>
+      </dependency>
+      <dependency>
+      	<groupId>org.overlord</groupId>
+      	<artifactId>overlord-commons-resteasy-service-eap</artifactId>
+        <version>${version.org.overlord.overlord-commons}</version>
+      </dependency>
+      <dependency>
+      	<groupId>org.overlord</groupId>
+      	<artifactId>overlord-commons-resteasy-service-wildfly</artifactId>
+        <version>${version.org.overlord.overlord-commons}</version>
+      </dependency>
       <!-- Apache Commons -->
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -835,6 +851,39 @@
         <artifactId>jboss-jacc-api_1.4_spec</artifactId>
         <version>${version.org.jboss.spec.javax.security.jacc.jboss-jacc-api_1.4_spec}</version>
       </dependency>
+    <!-- RESTEasy -->
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-jaxrs</artifactId>
+      <version>${version.org.jboss.resteasy}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-atom-provider</artifactId>
+      <version>${version.org.jboss.resteasy}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-cdi</artifactId>
+      <version>${version.org.jboss.resteasy}</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-jaxb-provider</artifactId>
+      <version>${version.org.jboss.resteasy}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>resteasy-multipart-provider</artifactId>
+      <version>${version.org.jboss.resteasy}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jboss.resteasy</groupId>
+      <artifactId>jaxrs-api</artifactId>
+      <version>${version.org.jboss.resteasy}</version>
+    </dependency>
+
+
       <dependency>
         <groupId>org.jboss.resteasy</groupId>
         <artifactId>tjws</artifactId>
@@ -885,6 +934,11 @@
         <artifactId>httpcore</artifactId>
         <version>${version.org.apache.httpcomponents.httpcore}</version>
       </dependency>
+	  <dependency>
+    	<groupId>javax.transaction</groupId>
+    	<artifactId>jta</artifactId>
+    	<version>${version.javax.transaction}</version>
+      </dependency>      
     </dependencies>
   </dependencyManagement>
 

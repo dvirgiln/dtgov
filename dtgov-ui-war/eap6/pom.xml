@@ -39,6 +39,10 @@
         </exclusion>
       </exclusions>
     </dependency>
+      <dependency>
+      	<groupId>org.overlord</groupId>
+      	<artifactId>overlord-commons-resteasy-service-eap</artifactId>
+      </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -74,6 +78,7 @@
                 <exclude>WEB-INF/lib/jaxb-*.jar</exclude>
                 <exclude>WEB-INF/lib/netty*.jar</exclude>
                 <exclude>WEB-INF/lib/xercesImpl*.jar</exclude>
+                <exclude>WEB-INF/lib/overlord-commons-resteasy-service-wildfly*.jar</exclude>
               </excludes>
             </overlay>
           </overlays>

@@ -61,6 +61,14 @@
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
     </dependency>
+      <dependency>
+      	<groupId>org.overlord</groupId>
+      	<artifactId>overlord-commons-resteasy-service</artifactId>
+      </dependency>
+      <dependency>
+        <groupId>org.overlord</groupId>
+        <artifactId>overlord-commons-services</artifactId>
+      </dependency>    
   </dependencies>
 
 </project>

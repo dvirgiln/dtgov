@@ -72,7 +72,6 @@
                 <exclude>WEB-INF/lib/resteasy-*.jar</exclude>
                 <exclude>WEB-INF/lib/slf4j-api-*.jar</exclude>
                 <exclude>WEB-INF/lib/slf4j-ext-*.jar</exclude>
-                <exclude>WEB-INF/lib/overlord-commons-resteasy-service-wildfly*.jar</exclude>
               </excludes>
             </overlay>
           </overlays>

@@ -15,25 +15,28 @@
  */
 package org.overlord.dtgov.client;
 
+import java.util.Set;
+
 import javax.ws.rs.core.UriBuilder;
 
 import org.jboss.resteasy.client.ClientExecutor;
 import org.jboss.resteasy.client.ClientResponse;
 import org.jboss.resteasy.plugins.providers.RegisterBuiltin;
-import org.jboss.resteasy.specimpl.UriBuilderImpl;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
+import org.overlord.commons.resteasy.client.OverlordUriBuilder;
+import org.overlord.commons.services.ServiceRegistryUtil;
 import org.overlord.dtgov.client.i18n.Messages;
 
 /**
  * Extends the RESTEasy {@link org.jboss.resteasy.client.ClientRequest} class in
  * order to provide a {@link ClientExecutor} and {@link ResteasyProviderFactory}
  * without requiring clients to pass them in.
- * 
+ *
  * Additionally, this class overrides the various http methods (post, get, put)
  * in order to implement some error handling. These methods will throw an
  * appropriate exception now (when possible), rather than a less meaningful
  * RESTEasy generic exception.
- * 
+ *
  * @author David Virgil Naranjo
  */
 public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
@@ -48,7 +51,13 @@ public class ClientRequest extends org.jboss.resteasy.client.ClientRequest {
 	 * @param uriTemplate
 	 */
 	private static UriBuilder getBuilder(String uriTemplate) {
-		return new UriBuilderImpl().uriTemplate(uriTemplate);
+        Set<OverlordUriBuilder> uriBuilders = ServiceRegistryUtil.getServices(OverlordUriBuilder.class);
+        if (uriBuilders.size() == 1) {
+            for (OverlordUriBuilder uriBuilder : uriBuilders) {
+                return uriBuilder.getBuilder(uriTemplate);
+            }
+        }
+        return null;
 	}
 
     /**
